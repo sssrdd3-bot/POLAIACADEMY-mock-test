@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polai Academy - Practice Set 03</title>
+    <style>
+        :root {
+            --primary: #4A90E2;
+            --secondary: #FF6B6B;
+            --background: #F4F7F6;
+            --text-dark: #2C3E50;
+            --text-light: #FFFFFF;
+            --success: #2ECC71;
+            --warning: #F39C12;
+            --card-bg: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #74EBD5 0%, #9FACE6 100%);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(to right, var(--primary), #8E44AD);
+            color: var(--text-light);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            margin: 5px 0 0;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .screen {
+            display: none;
+            padding: 30px;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* Start Screen */
+        .start-content {
+            text-align: center;
+        }
+        
+        .start-content h2 {
+            color: var(--primary);
+        }
+
+        .rules {
+            background: #fdfbfb;
+            border-left: 5px solid var(--warning);
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Quiz Screen */
+        .timer-bar {
+            background: var(--text-dark);
+            color: var(--warning);
+            padding: 10px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .question-container {
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .option-label {
+            display: block;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+
+        .option-label:hover {
+            background: #e2e6ea;
+            border-color: #adb5bd;
+        }
+
+        input[type="radio"] {
+            margin-right: 15px;
+            transform: scale(1.2);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        /* Buttons */
+        .btn {
+            background-color: var(--primary);
+            color: var(--text-light);
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #357ABD;
+        }
+
+        .btn-submit {
+            background-color: var(--secondary);
+        }
+
+        .btn-submit:hover {
+            background-color: #E25555;
+        }
+
+        /* Result Screen */
+        .result-dashboard {
+            text-align: center;
+        }
+
+        .score-box {
+            background: linear-gradient(135deg, var(--success), #27AE60);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+
+        .stat-card h3 { margin: 0; font-size: 28px; }
+        .stat-card p { margin: 5px 0 0; color: #6c757d; font-size: 14px; }
+
+        .cta-banner {
+            background: linear-gradient(to right, #FF416C, #FF4B2B);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+            font-size: 22px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255, 65, 108, 0.4);
+            animation: pulse 2s infinite;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .cta-banner a {
+            color: white;
+            text-decoration: none;
+            display: block;
+        }
+
+        .cta-banner:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .review-section {
+            text-align: left;
+            max-height: 400px;
+            overflow-y: auto;
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+
+        .review-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #fdfdfd;
+            border: 1px solid #eee;
+        }
+
+        .review-item.correct { border-left: 5px solid var(--success); }
+        .review-item.wrong { border-left: 5px solid var(--secondary); }
+        .review-item.unattempted { border-left: 5px solid #95a5a6; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🧑‍🏫 Polai Academy 📚</h1>
+        <p>Computer Knowledge - Practice Set 03</p>
+    </div>
+
+    <div id="startScreen" class="screen active">
+        <div class="start-content">
+            <h2>Welcome to the Mock Test!</h2>
+            <div class="rules">
+                <strong>📝 Test Details:</strong>
+                <ul>
+                    <li>Total Questions: 25</li>
+                    <li>Time Allowed: 25 Minutes</li>
+                    <li>Marking Scheme: +2 for Correct, -1 for Wrong</li>
+                    <li>Maximum Marks: 50</li>
+                </ul>
+            </div>
+            <button class="btn" onclick="startTest()">Start Test Now 🚀</button>
+        </div>
+    </div>
+
+    <div id="quizScreen" class="screen">
+        <div class="timer-bar">
+            <span>Question <span id="qCurrent">1</span>/25</span>
+            <span id="timeDisplay">⏱️ 25:00</span>
+        </div>
+        
+        <div id="questionArea" style="margin-top: 20px;">
+            </div>
+
+        <div class="navigation">
+            <button class="btn" id="prevBtn" onclick="navigate(-1)">⬅️ Previous</button>
+            <button class="btn btn-submit" id="submitBtn" onclick="submitTest()">Submit Test 🎯</button>
+            <button class="btn" id="nextBtn" onclick="navigate(1)">Next ➡️</button>
+        </div>
+    </div>
+
+    <div id="resultScreen" class="screen">
+        <div class="result-dashboard">
+            <h2>📊 Performance Dashboard</h2>
+            
+            <div class="score-box">
+                Total Score: <strong id="finalScore">0</strong> / 50
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card" style="color: var(--success);">
+                    <h3 id="correctCount">0</h3>
+                    <p>Correct (+2)</p>
+                </div>
+                <div class="stat-card" style="color: var(--secondary);">
+                    <h3 id="wrongCount">0</h3>
+                    <p>Incorrect (-1)</p>
+                </div>
+                <div class="stat-card" style="color: #95a5a6;">
+                    <h3 id="unattemptedCount">0</h3>
+                    <p>Unattempted (0)</p>
+                </div>
+            </div>
+
+            <div class="cta-banner">
+                <a href="https://youtube.com/@polaiacademy?si=350mRqiUp0wwSbM0" target="_blank">
+                    🔔 Like and Subscribe Polai Academy YouTube Channel! 📺
+                </a>
+            </div>
+
+            <div class="review-section" id="reviewArea">
+                </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {q: "On a CD-RW you can-", options: ["Read and write information", "Only read information", "Only write information", "Read, write and rewrite information"], ans: 3},
+        {q: "In computer terminology, information means", options: ["Raw data", "Data in more useful", "Alphanumeric data", "Program"], ans: 1},
+        {q: "After a picture has been taken with a digital camera and processed appropriately, the actual print of the picture is considered.", options: ["Data", "Input", "Output", "The process"], ans: 2},
+        {q: "What is output?", options: ["What the processor takes from the user", "What the user gives to the processor", "What the processor gets from the user", "What the processor gives to the user"], ans: 3},
+        {q: "What is the main difference between a mainframe and a super computer?", options: ["Super computer is much larger than mainframe computers", "Super computers are much smaller than mainframe computers", "Supercomputers are focused to execute few programs as fast as possible while mainframe uses its power to execute as many programs concurrently", "Supercomputers are focused to execute as many programs as possible while mainframe uses its power to execute few programs as fast as possible"], ans: 2},
+        {q: "Programs such as Mozilla Firefox that serve as navigable windows into the Web are called.", options: ["Hypertext", "Networks", "Internet", "Web browsers"], ans: 3},
+        {q: "What is the function of Recycle Bin?", options: ["Store deleted file", "Store temporary file", "Store corrupted file", "Store Document file"], ans: 0},
+        {q: "Which device cannot be shared in network?", options: ["Floppy", "Keyboard", "Computer", "Printer"], ans: 1},
+        {q: "A right click on the desktop itself will.........", options: ["Open the Display Properties dialog box", "Show a context - sensitive menu", "Open the Control Panel", "Minimize all open applications"], ans: 0},
+        {q: "The advantage of using a spreadsheet is:", options: ["Calculations can be done automatically", "Changing data automatically updates calculations", "More flexibility", "All of the above"], ans: 3},
+        {q: "Documentations should include...", options: ["Destination and users of the output data", "Source of input data", "Information on the purpose of the workbook", "All of above"], ans: 3},
+        {q: "To edit the selected cell in MS excel-", options: ["Press F1", "Press F2", "Press F4", "Press F5"], ans: 1},
+        {q: "You can convert existing Excel worksheet data and charts to HTML document by using the", options: ["FTP Wizard", "Internet Assistant Wizard", "Intranet Wizard", "Import Wizard"], ans: 1},
+        {q: "Which of the following storage media provides sequential access only?", options: ["Floppy disk", "Magnetic disk", "Magnetic tape", "Optical disk"], ans: 2},
+        {q: "What is the storage area for e-mail messages called?", options: ["A folder", "A directory", "A mailbox", "The hard disk"], ans: 2},
+        {q: "The set of parallel electrical conducting lines through which different components on the mother board of a PC unit are linked together are called:", options: ["Conductors", "Buses", "Slide Master", "Consecutives"], ans: 1},
+        {q: "A PDA's memory contents remain intact when it is turned off because:", options: ["A battery keeps current available for RAM", "The memory contents are synchronized with a desktop", "The memory contents are copied to flash cards", "The memory contents are stored in ROM"], ans: 0},
+        {q: "A network of geographically distant computers and terminals is called a-", options: ["Integrated Services Digital Network (ISDN)", "Metropolitan area network (MAN)", "Wide area network (WAN)", "Local area network (LAN)"], ans: 2},
+        {q: "One byte represents:", options: ["Eight characters", "Eight bits", "A single digit with two possible states", "A word"], ans: 1},
+        {q: "Saving files in HTML format:", options: ["Makes it possible for anyone to view the file in a Web browser", "Increases file conversion costs", "Decreases software compatibility", "All of the above"], ans: 0},
+        {q: "Which of the following would NOT be performed with application software?", options: ["Financial report sent to investors", "Hard disk cleanup", "Charts for a sales meeting presentation", "Customer list used for mailing invoices"], ans: 1},
+        {q: "Which of the following statements is TRUE about the public switched telephone network (PSTN)?", options: ["PSTN is a packet-switching network", "PSTN is comprised of a variety of physical media, including twisted pair and fiber optic cable", "PSTN is exclusively a digital network system", "PSTN is only used for voice transmissions, while the Internet is used for data transmissions"], ans: 1},
+        {q: "Which of the following best describes the difference between the Internet and the World Wide Web?", options: ["The Internet is the collection of computers, while the World Wide Web is the wiring and transmission protocols that connect them", "The Internet carries traffic for schools, government offices, and other public organizations, while the World Wide Web carries commercial traffic", "The Internet consists of software programs such as e-mail and IRC, while the World Wide Web is a collection of Web pages", "The Internet is the physical network of global computers, while the World Wide Web is many hypertext documents distributed globally over many computers"], ans: 3},
+        {q: "Which of the following runs on a user's local computer and is used to request and display Web pages?", options: ["FTP", "Web browser", "Web server", "HTML"], ans: 1},
+        {q: "Which of the following computer types is most powerful?", options: ["Professional workstation", "Internet appliance", "Desktop computer", "Network computer"], ans: 0}
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(questions.length).fill(null);
+    let timeLeft = 25 * 60; // 25 minutes
+    let timerInterval;
+
+    function startTest() {
+        document.getElementById('startScreen').classList.remove('active');
+        document.getElementById('quizScreen').classList.add('active');
+        loadQuestion();
+        timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function loadQuestion() {
+        const q = questions[currentQuestion];
+        let html = `<div class="question-text">Q${currentQuestion + 1}. ${q.q}</div>`;
+        
+        q.options.forEach((opt, index) => {
+            const isChecked = userAnswers[currentQuestion] === index ? "checked" : "";
+            html += `
+                <label class="option-label">
+                    <input type="radio" name="q${currentQuestion}" value="${index}" ${isChecked} onchange="saveAnswer(${index})">
+                    ${opt}
+                </label>
+            `;
+        });
+
+        document.getElementById('questionArea').innerHTML = html;
+        document.getElementById('qCurrent').innerText = currentQuestion + 1;
+
+        // Manage buttons
+        document.getElementById('prevBtn').style.display = currentQuestion === 0 ? 'none' : 'inline-block';
+        if(currentQuestion === questions.length - 1) {
+            document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('submitBtn').style.display = 'inline-block';
+        } else {
+            document.getElementById('nextBtn').style.display = 'inline-block';
+            document.getElementById('submitBtn').style.display = 'none';
+        }
+    }
+
+    function saveAnswer(index) {
+        userAnswers[currentQuestion] = index;
+    }
+
+    function navigate(step) {
+        currentQuestion += step;
+        loadQuestion();
+    }
+
+    function updateTimer() {
+        timeLeft--;
+        let m = Math.floor(timeLeft / 60);
+        let s = timeLeft % 60;
+        document.getElementById('timeDisplay').innerText = `⏱️ ${m}:${s < 10 ? '0' : ''}${s}`;
+        
+        if(timeLeft <= 0) {
+            clearInterval(timerInterval);
+            submitTest();
+        }
+    }
+
+    function submitTest() {
+        clearInterval(timerInterval);
+        document.getElementById('quizScreen').classList.remove('active');
+        document.getElementById('resultScreen').classList.add('active');
+        calculateScore();
+    }
+
+    function calculateScore() {
+        let correct = 0, wrong = 0, unattempted = 0;
+        let reviewHtml = '<h3>Detailed Review:</h3>';
+
+        questions.forEach((q, i) => {
+            let uAns = userAnswers[i];
+            let statusClass = "unattempted";
+            let statusText = "Unattempted";
+
+            if (uAns === null) {
+                unattempted++;
+            } else if (uAns === q.ans) {
+                correct++;
+                statusClass = "correct";
+                statusText = "Correct ✓";
+            } else {
+                wrong++;
+                statusClass = "wrong";
+                statusText = "Wrong ✗";
+            }
+
+            reviewHtml += `
+                <div class="review-item ${statusClass}">
+                    <strong>Q${i+1}. ${q.q}</strong><br>
+                    <span style="color: ${statusClass === 'wrong' ? 'red' : 'inherit'}">Your Answer: ${uAns !== null ? q.options[uAns] : "Not Answered"}</span><br>
+                    <span style="color: green;">Correct Answer: ${q.options[q.ans]}</span>
+                </div>
+            `;
+        });
+
+        let totalScore = (correct * 2) - (wrong * 1);
+        
+        document.getElementById('finalScore').innerText = totalScore;
+        document.getElementById('correctCount').innerText = correct;
+        document.getElementById('wrongCount').innerText = wrong;
+        document.getElementById('unattemptedCount').innerText = unattempted;
+        document.getElementById('reviewArea').innerHTML = reviewHtml;
+    }
+</script>
+
+</body>
+</html>
